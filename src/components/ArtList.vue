@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isBuyActive || isSellActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isBuyActive || isSellActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isGenuineActive || isCategoryActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -53,7 +53,14 @@
         <!-- Genuine列 -->
         <el-table-column prop="genuine" label="Genuine">
           <template #header>
-            Genuine
+            <div>
+              Genuine
+              <el-select v-model="searchInputs.genuine" placeholder="Select" @change="() => {onGenuineSearchInput('genuine'); search()}" :disabled="isIdActive || isNameActive || isCategoryActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Yes" value="Yes"></el-option>        
+              <el-option label="No" value="No"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.genuine }}</span>
@@ -63,7 +70,15 @@
         <!-- Category列 -->
         <el-table-column prop="category" label="Category">
           <template #header>
-            Category
+            <div>
+              Category
+              <el-select v-model="searchInputs.category" placeholder="Select" @change="() => {onCategorySearchInput('category'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Housewares" value="Housewares"></el-option>        
+              <el-option label="Miscellaneous" value="Miscellaneous"></el-option>        
+              <el-option label="Wall-mounted" value="Wall-mounted"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.category }}</span>
@@ -76,9 +91,9 @@
             <div>
               Buy
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isSellActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isSellActive"></el-input>
-                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isSellActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive"></el-input>
+                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -97,9 +112,9 @@
             <div>
               Sell
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isBuyActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isBuyActive"></el-input>
-                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isBuyActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive"></el-input>
+                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -115,7 +130,17 @@
         <!-- Size列 -->
         <el-table-column prop="size" label="Size">
           <template #header>
-            Size
+            <div>
+              Size
+              <el-select v-model="searchInputs.size" placeholder="Select" @change="() => {onSizeSearchInput('size'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSellActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="1x1" value="1x1"></el-option>        
+              <el-option label="1x2" value="1x2"></el-option>        
+              <el-option label="2x1" value="2x1"></el-option>        
+              <el-option label="2x1.5" value="2x1.5"></el-option>        
+              <el-option label="2x2" value="2x2"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.size }}</span>
@@ -155,7 +180,14 @@
         <!-- Hha Concept1列 -->
         <el-table-column prop="hhaConcept1" label="Hha Concept1">
           <template #header>
-            Hha Concept1
+            <div>
+              Hha Concept1
+              <el-select v-model="searchInputs.hhaConcept1" placeholder="Select" @change="() => {onHhaConcept1SearchInput('hhaConcept1'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept2Active || isTagActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="expensive" value="expensive"></el-option>        
+              <el-option label="horror" value="horror"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.hhaConcept1 }}</span>
@@ -165,7 +197,15 @@
         <!-- Hha Concept2列 -->
         <el-table-column prop="hhaConcept2" label="Hha Concept2">
           <template #header>
-            Hha Concept2
+            <div>
+              Hha Concept2
+              <el-select v-model="searchInputs.hhaConcept2" placeholder="Select" @change="() => {onHhaConcept2SearchInput('hhaConcept2'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept1Active || isTagActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="facility" value="facility"></el-option>        
+              <el-option label="folk art" value="folk art"></el-option>        
+              <el-option label="None" value="None"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.hhaConcept2 }}</span>
@@ -175,7 +215,14 @@
         <!-- Tag列 -->
         <el-table-column prop="tag" label="Tag">
           <template #header>
-            Tag
+            <div>
+              Tag
+              <el-select v-model="searchInputs.tag" placeholder="Select" @change="() => {onTagSearchInput('tag'); search()}" :disabled="isIdActive || isNameActive || isGenuineActive || isCategoryActive || isBuyActive || isSellActive || isSizeActive || isHhaConcept1Active || isHhaConcept2Active">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Picture" value="Picture"></el-option>        
+              <el-option label="Sculpture" value="Sculpture"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.tag }}</span>
@@ -213,12 +260,18 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      genuine: '',
+      category: '',
       buy_min: null,
       buy_max: null,
       buy_sort: '',
       sell_min: null,
       sell_max: null,
       sell_sort: '',
+      size: '',
+      hhaConcept1: '',
+      hhaConcept2: '',
+      tag: '',
     });
 
 
@@ -234,8 +287,14 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isGenuineActive = ref(false);
+    const isCategoryActive = ref(false);
     const isBuyActive = ref(false);
     const isSellActive = ref(false);
+    const isSizeActive = ref(false);
+    const isHhaConcept1Active = ref(false);
+    const isHhaConcept2Active = ref(false);
+    const isTagActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -282,6 +341,24 @@ export default {
       });
     };
 
+    // 从/api/art/searchGenuine接口获取搜索数据
+    const fetchDataFromApiSearchGenuine = (query) => {
+      axios.get(`/api/art/searchGenuine?genuine=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/art/searchCategory接口获取搜索数据
+    const fetchDataFromApiSearchCategory = (query) => {
+      axios.get(`/api/art/searchCategory?category=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
     // 从/api/art/searchBuy接口获取搜索数据
     const fetchDataFromApiSearchBuy = (min, max, sort) => {
       axios.get(`/api/art/searchBuy?min=${min}&max=${max}&sort=${sort}`).then(response => {
@@ -296,6 +373,42 @@ export default {
       axios.get(`/api/art/searchSell?min=${min}&max=${max}&sort=${sort}`).then(response => {
         tableData.value = response.data;
         total.value = tableData.value.length;
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/art/searchSize接口获取搜索数据
+    const fetchDataFromApiSearchSize = (query) => {
+      axios.get(`/api/art/searchSize?size=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/art/searchHhaConcept1接口获取搜索数据
+    const fetchDataFromApiSearchHhaConcept1 = (query) => {
+      axios.get(`/api/art/searchHhaConcept1?hhaConcept1=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/art/searchHhaConcept2接口获取搜索数据
+    const fetchDataFromApiSearchHhaConcept2 = (query) => {
+      axios.get(`/api/art/searchHhaConcept2?hhaConcept2=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/art/searchTag接口获取搜索数据
+    const fetchDataFromApiSearchTag = (query) => {
+      axios.get(`/api/art/searchTag?tag=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
         currentPage.value = 1; 
       });
     };
@@ -314,6 +427,22 @@ export default {
         isNameActive.value = true;
       } else if (!searchInputs.value.name) {
         isNameActive.value = false;
+      }
+    };
+
+    const onGenuineSearchInput = (column) => {
+      if (column === 'genuine' && searchInputs.value.genuine) {
+        isGenuineActive.value = true;
+      } else if (!searchInputs.value.genuine) {
+        isGenuineActive.value = false;
+      }
+    };
+
+    const onCategorySearchInput = (column) => {
+      if (column === 'category' && searchInputs.value.category) {
+        isCategoryActive.value = true;
+      } else if (!searchInputs.value.category) {
+        isCategoryActive.value = false;
       }
     };
 
@@ -341,6 +470,38 @@ export default {
       }
     };
 
+    const onSizeSearchInput = (column) => {
+      if (column === 'size' && searchInputs.value.size) {
+        isSizeActive.value = true;
+      } else if (!searchInputs.value.size) {
+        isSizeActive.value = false;
+      }
+    };
+
+    const onHhaConcept1SearchInput = (column) => {
+      if (column === 'hhaConcept1' && searchInputs.value.hhaConcept1) {
+        isHhaConcept1Active.value = true;
+      } else if (!searchInputs.value.hhaConcept1) {
+        isHhaConcept1Active.value = false;
+      }
+    };
+
+    const onHhaConcept2SearchInput = (column) => {
+      if (column === 'hhaConcept2' && searchInputs.value.hhaConcept2) {
+        isHhaConcept2Active.value = true;
+      } else if (!searchInputs.value.hhaConcept2) {
+        isHhaConcept2Active.value = false;
+      }
+    };
+
+    const onTagSearchInput = (column) => {
+      if (column === 'tag' && searchInputs.value.tag) {
+        isTagActive.value = true;
+      } else if (!searchInputs.value.tag) {
+        isTagActive.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -353,6 +514,16 @@ export default {
       // 处理 name 列的搜索
       else if (searchInputs.value.name) {
         fetchDataFromApiFindByName(searchInputs.value.name);
+      }
+
+      // 处理 genuine 列的搜索
+      else if (searchInputs.value.genuine) {
+        fetchDataFromApiSearchGenuine(searchInputs.value.genuine);
+      }
+
+      // 处理 category 列的搜索
+      else if (searchInputs.value.category) {
+        fetchDataFromApiSearchCategory(searchInputs.value.category);
       }
 
       // 处理 buy 列的搜索
@@ -371,6 +542,26 @@ export default {
         fetchDataFromApiSearchSell(min, max, sort);
       }
 
+      // 处理 size 列的搜索
+      else if (searchInputs.value.size) {
+        fetchDataFromApiSearchSize(searchInputs.value.size);
+      }
+
+      // 处理 hhaConcept1 列的搜索
+      else if (searchInputs.value.hhaConcept1) {
+        fetchDataFromApiSearchHhaConcept1(searchInputs.value.hhaConcept1);
+      }
+
+      // 处理 hhaConcept2 列的搜索
+      else if (searchInputs.value.hhaConcept2) {
+        fetchDataFromApiSearchHhaConcept2(searchInputs.value.hhaConcept2);
+      }
+
+      // 处理 tag 列的搜索
+      else if (searchInputs.value.tag) {
+        fetchDataFromApiSearchTag(searchInputs.value.tag);
+      }
+
       else {
         fetchAllData();
       }
@@ -384,12 +575,18 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isGenuineActive.value = false;
+      isCategoryActive.value = false;
       isBuyActive.value = false;
       searchInputs.value.buy_min = null;
       searchInputs.value.buy_max = null;
       isSellActive.value = false;
       searchInputs.value.sell_min = null;
       searchInputs.value.sell_max = null;
+      isSizeActive.value = false;
+      isHhaConcept1Active.value = false;
+      isHhaConcept2Active.value = false;
+      isTagActive.value = false;
 
       fetchAllData();
     };
@@ -418,12 +615,30 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isGenuineActive,
+      onGenuineSearchInput,
+      fetchDataFromApiSearchGenuine,
+      isCategoryActive,
+      onCategorySearchInput,
+      fetchDataFromApiSearchCategory,
       isBuyActive,
       onBuySearchInput,
       fetchDataFromApiSearchBuy,
       isSellActive,
       onSellSearchInput,
       fetchDataFromApiSearchSell,
+      isSizeActive,
+      onSizeSearchInput,
+      fetchDataFromApiSearchSize,
+      isHhaConcept1Active,
+      onHhaConcept1SearchInput,
+      fetchDataFromApiSearchHhaConcept1,
+      isHhaConcept2Active,
+      onHhaConcept2SearchInput,
+      fetchDataFromApiSearchHhaConcept2,
+      isTagActive,
+      onTagSearchInput,
+      fetchDataFromApiSearchTag,
     };
   }
 };

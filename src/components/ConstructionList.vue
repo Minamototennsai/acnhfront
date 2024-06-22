@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isBuyActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isBuyActive || isCategoryActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isBuyActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isBuyActive || isCategoryActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -56,9 +56,9 @@
             <div>
               Buy
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive"></el-input>
-                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isCategoryActive || isSourceActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isCategoryActive || isSourceActive"></el-input>
+                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isCategoryActive || isSourceActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -74,7 +74,18 @@
         <!-- Category列 -->
         <el-table-column prop="category" label="Category">
           <template #header>
-            Category
+            <div>
+              Category
+              <el-select v-model="searchInputs.category" placeholder="Select" @change="() => {onCategorySearchInput('category'); search()}" :disabled="isIdActive || isNameActive || isBuyActive || isSourceActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Bridge" value="Bridge"></el-option>        
+              <el-option label="Door" value="Door"></el-option>        
+              <el-option label="Incline" value="Incline"></el-option>        
+              <el-option label="Mailbox" value="Mailbox"></el-option>        
+              <el-option label="Roofing" value="Roofing"></el-option>        
+              <el-option label="Siding" value="Siding"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.category }}</span>
@@ -84,7 +95,18 @@
         <!-- Source列 -->
         <el-table-column prop="source" label="Source">
           <template #header>
-            Source
+            <div>
+              Source
+              <el-select v-model="searchInputs.source" placeholder="Select" @change="() => {onSourceSearchInput('source'); search()}" :disabled="isIdActive || isNameActive || isBuyActive || isCategoryActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Tent" value="Tent"></el-option>        
+              <el-option label="Initial House" value="Initial House"></el-option>        
+              <el-option label="Resident Services Upgrade" value="Resident Services Upgrade"></el-option>        
+              <el-option label="3rd House Upgrade (Left Room)" value="3rd House Upgrade (Left Room)"></el-option>        
+              <el-option label="4th House Upgrade (Right Room)" value="4th House Upgrade (Right Room)"></el-option>        
+              <el-option label="5th House Upgrade (2nd Floor)" value="5th House Upgrade (2nd Floor)"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.source }}</span>
@@ -125,6 +147,8 @@ export default {
       buy_min: null,
       buy_max: null,
       buy_sort: '',
+      category: '',
+      source: '',
     });
 
 
@@ -141,6 +165,8 @@ export default {
     const isIdActive = ref(false);
     const isNameActive = ref(false);
     const isBuyActive = ref(false);
+    const isCategoryActive = ref(false);
+    const isSourceActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -195,6 +221,24 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/construction/searchCategory接口获取搜索数据
+    const fetchDataFromApiSearchCategory = (query) => {
+      axios.get(`/api/construction/searchCategory?category=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/construction/searchSource接口获取搜索数据
+    const fetchDataFromApiSearchSource = (query) => {
+      axios.get(`/api/construction/searchSource?source=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -225,6 +269,22 @@ export default {
       }
     };
 
+    const onCategorySearchInput = (column) => {
+      if (column === 'category' && searchInputs.value.category) {
+        isCategoryActive.value = true;
+      } else if (!searchInputs.value.category) {
+        isCategoryActive.value = false;
+      }
+    };
+
+    const onSourceSearchInput = (column) => {
+      if (column === 'source' && searchInputs.value.source) {
+        isSourceActive.value = true;
+      } else if (!searchInputs.value.source) {
+        isSourceActive.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -247,6 +307,16 @@ export default {
         fetchDataFromApiSearchBuy(min, max, sort);
       }
 
+      // 处理 category 列的搜索
+      else if (searchInputs.value.category) {
+        fetchDataFromApiSearchCategory(searchInputs.value.category);
+      }
+
+      // 处理 source 列的搜索
+      else if (searchInputs.value.source) {
+        fetchDataFromApiSearchSource(searchInputs.value.source);
+      }
+
       else {
         fetchAllData();
       }
@@ -263,6 +333,8 @@ export default {
       isBuyActive.value = false;
       searchInputs.value.buy_min = null;
       searchInputs.value.buy_max = null;
+      isCategoryActive.value = false;
+      isSourceActive.value = false;
 
       fetchAllData();
     };
@@ -294,6 +366,12 @@ export default {
       isBuyActive,
       onBuySearchInput,
       fetchDataFromApiSearchBuy,
+      isCategoryActive,
+      onCategorySearchInput,
+      fetchDataFromApiSearchCategory,
+      isSourceActive,
+      onSourceSearchInput,
+      fetchDataFromApiSearchSource,
     };
   }
 };

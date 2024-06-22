@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isSellActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isSellActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isSellActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isSellActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -56,9 +56,9 @@
             <div>
               Sell
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive"></el-input>
-                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isSourceActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isSourceActive"></el-input>
+                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isSourceActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -74,7 +74,14 @@
         <!-- Source列 -->
         <el-table-column prop="source" label="Source">
           <template #header>
-            Source
+            <div>
+              Source
+              <el-select v-model="searchInputs.source" placeholder="Select" @change="() => {onSourceSearchInput('source'); search()}" :disabled="isIdActive || isNameActive || isSellActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Crafting" value="Crafting"></el-option>        
+              <el-option label="Tom Nook" value="Tom Nook"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.source }}</span>
@@ -115,6 +122,7 @@ export default {
       sell_min: null,
       sell_max: null,
       sell_sort: '',
+      source: '',
     });
 
 
@@ -131,6 +139,7 @@ export default {
     const isIdActive = ref(false);
     const isNameActive = ref(false);
     const isSellActive = ref(false);
+    const isSourceActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -185,6 +194,15 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/fencing/searchSource接口获取搜索数据
+    const fetchDataFromApiSearchSource = (query) => {
+      axios.get(`/api/fencing/searchSource?source=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -215,6 +233,14 @@ export default {
       }
     };
 
+    const onSourceSearchInput = (column) => {
+      if (column === 'source' && searchInputs.value.source) {
+        isSourceActive.value = true;
+      } else if (!searchInputs.value.source) {
+        isSourceActive.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -237,6 +263,11 @@ export default {
         fetchDataFromApiSearchSell(min, max, sort);
       }
 
+      // 处理 source 列的搜索
+      else if (searchInputs.value.source) {
+        fetchDataFromApiSearchSource(searchInputs.value.source);
+      }
+
       else {
         fetchAllData();
       }
@@ -253,6 +284,7 @@ export default {
       isSellActive.value = false;
       searchInputs.value.sell_min = null;
       searchInputs.value.sell_max = null;
+      isSourceActive.value = false;
 
       fetchAllData();
     };
@@ -284,6 +316,9 @@ export default {
       isSellActive,
       onSellSearchInput,
       fetchDataFromApiSearchSell,
+      isSourceActive,
+      onSourceSearchInput,
+      fetchDataFromApiSearchSource,
     };
   }
 };

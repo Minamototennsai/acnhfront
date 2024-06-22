@@ -53,7 +53,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -66,7 +66,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -79,7 +79,7 @@
           <template #header>
             <div>
               Diy
-              <el-select v-model="searchInputs.diy" placeholder="Select" @change="() => {onDiySearchInput('diy'); search()}" :disabled="isIdActive || isNameActive || isBuyActive || isSellActive || isMilesPriceActive">
+              <el-select v-model="searchInputs.diy" placeholder="Select" @change="() => {onDiySearchInput('diy'); search()}" :disabled="isIdActive || isNameActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active">
               <el-option label="Null" value=""></el-option>
               <el-option label="Yes" value="Yes"></el-option>        
               <el-option label="No" value="No"></el-option>        
@@ -94,7 +94,10 @@
         <!-- Stack Size列 -->
         <el-table-column prop="stackSize" label="Stack Size">
           <template #header>
-            Stack Size
+            <div>
+              Stack Size
+              <el-input v-model="searchInputs.stackSize" placeholder="Search in Stack Size" @input="onStackSizeSearchInput('stackSize')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.stackSize }}</span>
@@ -107,9 +110,9 @@
             <div>
               Buy
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive"></el-input>
-                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -128,9 +131,9 @@
             <div>
               Sell
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive"></el-input>
-                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -149,9 +152,9 @@
             <div>
               Miles Price
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_min" placeholder="Min" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_max" placeholder="Max" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive"></el-input>
-                <el-select v-model="searchInputs.milesPrice_sort" placeholder="Sort" @change="() => {onMilesPriceSearchInput('milesPrice'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_min" placeholder="Min" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_max" placeholder="Max" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+                <el-select v-model="searchInputs.milesPrice_sort" placeholder="Sort" @change="() => {onMilesPriceSearchInput('milesPrice'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -167,7 +170,10 @@
         <!-- Source列 -->
         <el-table-column prop="source" label="Source">
           <template #header>
-            Source
+            <div>
+              Source
+              <el-input v-model="searchInputs.source" placeholder="Search in Source" @input="onSourceSearchInput('source')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceNotesActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.source }}</span>
@@ -177,7 +183,10 @@
         <!-- Source Notes列 -->
         <el-table-column prop="sourceNotes" label="Source Notes">
           <template #header>
-            Source Notes
+            <div>
+              Source Notes
+              <el-input v-model="searchInputs.sourceNotes" placeholder="Search in Source Notes" @input="onSourceNotesSearchInput('sourceNotes')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isTagActive || isColor1Active || isColor2Active"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.sourceNotes }}</span>
@@ -187,7 +196,10 @@
         <!-- Tag列 -->
         <el-table-column prop="tag" label="Tag">
           <template #header>
-            Tag
+            <div>
+              Tag
+              <el-input v-model="searchInputs.tag" placeholder="Search in Tag" @input="onTagSearchInput('tag')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isColor1Active || isColor2Active"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.tag }}</span>
@@ -197,7 +209,22 @@
         <!-- Color1列 -->
         <el-table-column prop="color1" label="Color1">
           <template #header>
-            Color1
+            <div>
+              Color1
+              <el-select v-model="searchInputs.color1" placeholder="Select" @change="() => {onColor1SearchInput('color1'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor2Active">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Black" value="Black"></el-option>        
+              <el-option label="Blue" value="Blue"></el-option>        
+              <el-option label="Green" value="Green"></el-option>        
+              <el-option label="Orange" value="Orange"></el-option>        
+              <el-option label="Pink" value="Pink"></el-option>        
+              <el-option label="Purple" value="Purple"></el-option>        
+              <el-option label="Red" value="Red"></el-option>        
+              <el-option label="White" value="White"></el-option>        
+              <el-option label="Yellow" value="Yellow"></el-option>        
+              <el-option label="None" value="None"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.color1 }}</span>
@@ -207,7 +234,14 @@
         <!-- Color2列 -->
         <el-table-column prop="color2" label="Color2">
           <template #header>
-            Color2
+            <div>
+              Color2
+              <el-select v-model="searchInputs.color2" placeholder="Select" @change="() => {onColor2SearchInput('color2'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive || isSourceNotesActive || isTagActive || isColor1Active">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Green" value="Green"></el-option>        
+              <el-option label="Yellow" value="Yellow"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.color2 }}</span>
@@ -264,6 +298,7 @@ export default {
       id: '',
       name: '',
       diy: '',
+      stackSize: '',
       buy_min: null,
       buy_max: null,
       buy_sort: '',
@@ -273,6 +308,11 @@ export default {
       milesPrice_min: null,
       milesPrice_max: null,
       milesPrice_sort: '',
+      source: '',
+      sourceNotes: '',
+      tag: '',
+      color1: '',
+      color2: '',
     });
 
 
@@ -289,9 +329,15 @@ export default {
     const isIdActive = ref(false);
     const isNameActive = ref(false);
     const isDiyActive = ref(false);
+    const isStackSizeActive = ref(false);
     const isBuyActive = ref(false);
     const isSellActive = ref(false);
     const isMilesPriceActive = ref(false);
+    const isSourceActive = ref(false);
+    const isSourceNotesActive = ref(false);
+    const isTagActive = ref(false);
+    const isColor1Active = ref(false);
+    const isColor2Active = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -347,6 +393,15 @@ export default {
       });
     };
 
+    // 从/api/other/searchStackSize接口获取搜索数据
+    const fetchDataFromApiSearchStackSize = (query) => {
+      axios.get(`/api/other/searchStackSize?stackSize=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
     // 从/api/other/searchBuy接口获取搜索数据
     const fetchDataFromApiSearchBuy = (min, max, sort) => {
       axios.get(`/api/other/searchBuy?min=${min}&max=${max}&sort=${sort}`).then(response => {
@@ -373,6 +428,51 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/other/searchSource接口获取搜索数据
+    const fetchDataFromApiSearchSource = (query) => {
+      axios.get(`/api/other/searchSource?source=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/other/searchSourceNotes接口获取搜索数据
+    const fetchDataFromApiSearchSourceNotes = (query) => {
+      axios.get(`/api/other/searchSourceNotes?sourceNotes=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/other/searchTag接口获取搜索数据
+    const fetchDataFromApiSearchTag = (query) => {
+      axios.get(`/api/other/searchTag?tag=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/other/searchColor1接口获取搜索数据
+    const fetchDataFromApiSearchColor1 = (query) => {
+      axios.get(`/api/other/searchColor1?color1=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/other/searchColor2接口获取搜索数据
+    const fetchDataFromApiSearchColor2 = (query) => {
+      axios.get(`/api/other/searchColor2?color2=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -396,6 +496,14 @@ export default {
         isDiyActive.value = true;
       } else if (!searchInputs.value.diy) {
         isDiyActive.value = false;
+      }
+    };
+
+    const onStackSizeSearchInput = (column) => {
+      if (column === 'stackSize' && searchInputs.value.stackSize) {
+        isStackSizeActive.value = true;
+      } else if (!searchInputs.value.stackSize) {
+        isStackSizeActive.value = false;
       }
     };
 
@@ -435,6 +543,46 @@ export default {
       }
     };
 
+    const onSourceSearchInput = (column) => {
+      if (column === 'source' && searchInputs.value.source) {
+        isSourceActive.value = true;
+      } else if (!searchInputs.value.source) {
+        isSourceActive.value = false;
+      }
+    };
+
+    const onSourceNotesSearchInput = (column) => {
+      if (column === 'sourceNotes' && searchInputs.value.sourceNotes) {
+        isSourceNotesActive.value = true;
+      } else if (!searchInputs.value.sourceNotes) {
+        isSourceNotesActive.value = false;
+      }
+    };
+
+    const onTagSearchInput = (column) => {
+      if (column === 'tag' && searchInputs.value.tag) {
+        isTagActive.value = true;
+      } else if (!searchInputs.value.tag) {
+        isTagActive.value = false;
+      }
+    };
+
+    const onColor1SearchInput = (column) => {
+      if (column === 'color1' && searchInputs.value.color1) {
+        isColor1Active.value = true;
+      } else if (!searchInputs.value.color1) {
+        isColor1Active.value = false;
+      }
+    };
+
+    const onColor2SearchInput = (column) => {
+      if (column === 'color2' && searchInputs.value.color2) {
+        isColor2Active.value = true;
+      } else if (!searchInputs.value.color2) {
+        isColor2Active.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -452,6 +600,11 @@ export default {
       // 处理 diy 列的搜索
       else if (searchInputs.value.diy) {
         fetchDataFromApiSearchDiy(searchInputs.value.diy);
+      }
+
+      // 处理 stackSize 列的搜索
+      else if (searchInputs.value.stackSize) {
+        fetchDataFromApiSearchStackSize(searchInputs.value.stackSize);
       }
 
       // 处理 buy 列的搜索
@@ -478,6 +631,31 @@ export default {
         fetchDataFromApiSearchMilesPrice(min, max, sort);
       }
 
+      // 处理 source 列的搜索
+      else if (searchInputs.value.source) {
+        fetchDataFromApiSearchSource(searchInputs.value.source);
+      }
+
+      // 处理 sourceNotes 列的搜索
+      else if (searchInputs.value.sourceNotes) {
+        fetchDataFromApiSearchSourceNotes(searchInputs.value.sourceNotes);
+      }
+
+      // 处理 tag 列的搜索
+      else if (searchInputs.value.tag) {
+        fetchDataFromApiSearchTag(searchInputs.value.tag);
+      }
+
+      // 处理 color1 列的搜索
+      else if (searchInputs.value.color1) {
+        fetchDataFromApiSearchColor1(searchInputs.value.color1);
+      }
+
+      // 处理 color2 列的搜索
+      else if (searchInputs.value.color2) {
+        fetchDataFromApiSearchColor2(searchInputs.value.color2);
+      }
+
       else {
         fetchAllData();
       }
@@ -492,6 +670,7 @@ export default {
       isIdActive.value = false;
       isNameActive.value = false;
       isDiyActive.value = false;
+      isStackSizeActive.value = false;
       isBuyActive.value = false;
       searchInputs.value.buy_min = null;
       searchInputs.value.buy_max = null;
@@ -501,6 +680,11 @@ export default {
       isMilesPriceActive.value = false;
       searchInputs.value.milesPrice_min = null;
       searchInputs.value.milesPrice_max = null;
+      isSourceActive.value = false;
+      isSourceNotesActive.value = false;
+      isTagActive.value = false;
+      isColor1Active.value = false;
+      isColor2Active.value = false;
 
       fetchAllData();
     };
@@ -537,6 +721,9 @@ export default {
       isDiyActive,
       onDiySearchInput,
       fetchDataFromApiSearchDiy,
+      isStackSizeActive,
+      onStackSizeSearchInput,
+      fetchDataFromApiSearchStackSize,
       isBuyActive,
       onBuySearchInput,
       fetchDataFromApiSearchBuy,
@@ -546,6 +733,21 @@ export default {
       isMilesPriceActive,
       onMilesPriceSearchInput,
       fetchDataFromApiSearchMilesPrice,
+      isSourceActive,
+      onSourceSearchInput,
+      fetchDataFromApiSearchSource,
+      isSourceNotesActive,
+      onSourceNotesSearchInput,
+      fetchDataFromApiSearchSourceNotes,
+      isTagActive,
+      onTagSearchInput,
+      fetchDataFromApiSearchTag,
+      isColor1Active,
+      onColor1SearchInput,
+      fetchDataFromApiSearchColor1,
+      isColor2Active,
+      onColor2SearchInput,
+      fetchDataFromApiSearchColor2,
     };
   }
 };

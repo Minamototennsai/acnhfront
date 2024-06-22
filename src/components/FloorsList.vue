@@ -53,7 +53,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -66,7 +66,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -77,7 +77,14 @@
         <!-- Vfx列 -->
         <el-table-column prop="vfx" label="Vfx">
           <template #header>
-            Vfx
+            <div>
+              Vfx
+              <el-select v-model="searchInputs.vfx" placeholder="Select" @change="() => {onVfxSearchInput('vfx'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Yes" value="Yes"></el-option>        
+              <el-option label="No" value="No"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.vfx }}</span>
@@ -89,7 +96,7 @@
           <template #header>
             <div>
               Diy
-              <el-select v-model="searchInputs.diy" placeholder="Select" @change="() => {onDiySearchInput('diy'); search()}" :disabled="isIdActive || isNameActive || isBuyActive || isSellActive || isMilesPriceActive">
+              <el-select v-model="searchInputs.diy" placeholder="Select" @change="() => {onDiySearchInput('diy'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
               <el-option label="Null" value=""></el-option>
               <el-option label="Yes" value="Yes"></el-option>        
               <el-option label="No" value="No"></el-option>        
@@ -107,9 +114,9 @@
             <div>
               Buy
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive"></el-input>
-                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
+                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -128,9 +135,9 @@
             <div>
               Sell
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive"></el-input>
-                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
+                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -146,7 +153,26 @@
         <!-- Color1列 -->
         <el-table-column prop="color1" label="Color1">
           <template #header>
-            Color1
+            <div>
+              Color1
+              <el-select v-model="searchInputs.color1" placeholder="Select" @change="() => {onColor1SearchInput('color1'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Beige" value="Beige"></el-option>        
+              <el-option label="Black" value="Black"></el-option>        
+              <el-option label="Blue" value="Blue"></el-option>        
+              <el-option label="Brown" value="Brown"></el-option>        
+              <el-option label="Colorful" value="Colorful"></el-option>        
+              <el-option label="Gray" value="Gray"></el-option>        
+              <el-option label="Green" value="Green"></el-option>        
+              <el-option label="Light blue" value="Light blue"></el-option>        
+              <el-option label="Orange" value="Orange"></el-option>        
+              <el-option label="Pink" value="Pink"></el-option>        
+              <el-option label="Purple" value="Purple"></el-option>        
+              <el-option label="Red" value="Red"></el-option>        
+              <el-option label="White" value="White"></el-option>        
+              <el-option label="Yellow" value="Yellow"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.color1 }}</span>
@@ -156,7 +182,26 @@
         <!-- Color2列 -->
         <el-table-column prop="color2" label="Color2">
           <template #header>
-            Color2
+            <div>
+              Color2
+              <el-select v-model="searchInputs.color2" placeholder="Select" @change="() => {onColor2SearchInput('color2'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Beige" value="Beige"></el-option>        
+              <el-option label="Black" value="Black"></el-option>        
+              <el-option label="Blue" value="Blue"></el-option>        
+              <el-option label="Brown" value="Brown"></el-option>        
+              <el-option label="Colorful" value="Colorful"></el-option>        
+              <el-option label="Gray" value="Gray"></el-option>        
+              <el-option label="Green" value="Green"></el-option>        
+              <el-option label="Light blue" value="Light blue"></el-option>        
+              <el-option label="Orange" value="Orange"></el-option>        
+              <el-option label="Pink" value="Pink"></el-option>        
+              <el-option label="Purple" value="Purple"></el-option>        
+              <el-option label="Red" value="Red"></el-option>        
+              <el-option label="White" value="White"></el-option>        
+              <el-option label="Yellow" value="Yellow"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.color2 }}</span>
@@ -169,9 +214,9 @@
             <div>
               Miles Price
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_min" placeholder="Min" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_max" placeholder="Max" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive"></el-input>
-                <el-select v-model="searchInputs.milesPrice_sort" placeholder="Sort" @change="() => {onMilesPriceSearchInput('milesPrice'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_min" placeholder="Min" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_max" placeholder="Max" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive"></el-input>
+                <el-select v-model="searchInputs.milesPrice_sort" placeholder="Sort" @change="() => {onMilesPriceSearchInput('milesPrice'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -187,7 +232,18 @@
         <!-- Source列 -->
         <el-table-column prop="source" label="Source">
           <template #header>
-            Source
+            <div>
+              Source
+              <el-select v-model="searchInputs.source" placeholder="Select" @change="() => {onSourceSearchInput('source'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Birthday" value="Birthday"></el-option>        
+              <el-option label="Crafting" value="Crafting"></el-option>        
+              <el-option label="Nook Miles Shop" value="Nook Miles Shop"></el-option>        
+              <el-option label="Nook's Cranny" value="Nook's Cranny"></el-option>        
+              <el-option label="Saharah" value="Saharah"></el-option>        
+              <el-option label="Wedding Season" value="Wedding Season"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.source }}</span>
@@ -197,7 +253,32 @@
         <!-- Hha Concept1列 -->
         <el-table-column prop="hhaConcept1" label="Hha Concept1">
           <template #header>
-            Hha Concept1
+            <div>
+              Hha Concept1
+              <el-select v-model="searchInputs.hhaConcept1" placeholder="Select" @change="() => {onHhaConcept1SearchInput('hhaConcept1'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept2Active || isHhaSeriesActive || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="bathroom" value="bathroom"></el-option>        
+              <el-option label="child's room" value="child's room"></el-option>        
+              <el-option label="den" value="den"></el-option>        
+              <el-option label="expensive" value="expensive"></el-option>        
+              <el-option label="facility" value="facility"></el-option>        
+              <el-option label="fancy" value="fancy"></el-option>        
+              <el-option label="fitness" value="fitness"></el-option>        
+              <el-option label="folk art" value="folk art"></el-option>        
+              <el-option label="freezing cold" value="freezing cold"></el-option>        
+              <el-option label="garage" value="garage"></el-option>        
+              <el-option label="garden" value="garden"></el-option>        
+              <el-option label="horror" value="horror"></el-option>        
+              <el-option label="kitchen" value="kitchen"></el-option>        
+              <el-option label="living room" value="living room"></el-option>        
+              <el-option label="ocean" value="ocean"></el-option>        
+              <el-option label="party" value="party"></el-option>        
+              <el-option label="school" value="school"></el-option>        
+              <el-option label="shop" value="shop"></el-option>        
+              <el-option label="space" value="space"></el-option>        
+              <el-option label="zen-style" value="zen-style"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.hhaConcept1 }}</span>
@@ -207,7 +288,23 @@
         <!-- Hha Concept2列 -->
         <el-table-column prop="hhaConcept2" label="Hha Concept2">
           <template #header>
-            Hha Concept2
+            <div>
+              Hha Concept2
+              <el-select v-model="searchInputs.hhaConcept2" placeholder="Select" @change="() => {onHhaConcept2SearchInput('hhaConcept2'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaSeriesActive || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="child's room" value="child's room"></el-option>        
+              <el-option label="expensive" value="expensive"></el-option>        
+              <el-option label="facility" value="facility"></el-option>        
+              <el-option label="fancy" value="fancy"></el-option>        
+              <el-option label="folk art" value="folk art"></el-option>        
+              <el-option label="garage" value="garage"></el-option>        
+              <el-option label="garden" value="garden"></el-option>        
+              <el-option label="horror" value="horror"></el-option>        
+              <el-option label="living room" value="living room"></el-option>        
+              <el-option label="music" value="music"></el-option>        
+              <el-option label="None" value="None"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.hhaConcept2 }}</span>
@@ -217,7 +314,23 @@
         <!-- Hha Series列 -->
         <el-table-column prop="hhaSeries" label="Hha Series">
           <template #header>
-            Hha Series
+            <div>
+              Hha Series
+              <el-select v-model="searchInputs.hhaSeries" placeholder="Select" @change="() => {onHhaSeriesSearchInput('hhaSeries'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isTagActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="bamboo" value="bamboo"></el-option>        
+              <el-option label="Bunny Day" value="Bunny Day"></el-option>        
+              <el-option label="cherry blossoms" value="cherry blossoms"></el-option>        
+              <el-option label="frozen" value="frozen"></el-option>        
+              <el-option label="golden" value="golden"></el-option>        
+              <el-option label="mush" value="mush"></el-option>        
+              <el-option label="rattan" value="rattan"></el-option>        
+              <el-option label="stars" value="stars"></el-option>        
+              <el-option label="tree's bounty or leaves" value="tree's bounty or leaves"></el-option>        
+              <el-option label="wedding" value="wedding"></el-option>        
+              <el-option label="None" value="None"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.hhaSeries }}</span>
@@ -227,7 +340,55 @@
         <!-- Tag列 -->
         <el-table-column prop="tag" label="Tag">
           <template #header>
-            Tag
+            <div>
+              Tag
+              <el-select v-model="searchInputs.tag" placeholder="Select" @change="() => {onTagSearchInput('tag'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isCatalogActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Animal Floor" value="Animal Floor"></el-option>        
+              <el-option label="Arched Brick" value="Arched Brick"></el-option>        
+              <el-option label="Argyle" value="Argyle"></el-option>        
+              <el-option label="Brick" value="Brick"></el-option>        
+              <el-option label="Camouflage" value="Camouflage"></el-option>        
+              <el-option label="Chocolate" value="Chocolate"></el-option>        
+              <el-option label="Cloth Floors" value="Cloth Floors"></el-option>        
+              <el-option label="Colorful Wood" value="Colorful Wood"></el-option>        
+              <el-option label="Country" value="Country"></el-option>        
+              <el-option label="Decadence" value="Decadence"></el-option>        
+              <el-option label="Deco Wood" value="Deco Wood"></el-option>        
+              <el-option label="Dot" value="Dot"></el-option>        
+              <el-option label="Grassland" value="Grassland"></el-option>        
+              <el-option label="Herringbone" value="Herringbone"></el-option>        
+              <el-option label="Honeycomb" value="Honeycomb"></el-option>        
+              <el-option label="Iron" value="Iron"></el-option>        
+              <el-option label="Iron Parquet" value="Iron Parquet"></el-option>        
+              <el-option label="Japanese Style" value="Japanese Style"></el-option>        
+              <el-option label="Kitchen Floors" value="Kitchen Floors"></el-option>        
+              <el-option label="Luxury" value="Luxury"></el-option>        
+              <el-option label="Machine Floor" value="Machine Floor"></el-option>        
+              <el-option label="Morocco" value="Morocco"></el-option>        
+              <el-option label="Nature - Brown" value="Nature - Brown"></el-option>        
+              <el-option label="Nature - Fallen Leaves" value="Nature - Fallen Leaves"></el-option>        
+              <el-option label="Nature - Green" value="Nature - Green"></el-option>        
+              <el-option label="Nature - White" value="Nature - White"></el-option>        
+              <el-option label="Neta" value="Neta"></el-option>        
+              <el-option label="Painted Wood" value="Painted Wood"></el-option>        
+              <el-option label="Panel" value="Panel"></el-option>        
+              <el-option label="Parquet" value="Parquet"></el-option>        
+              <el-option label="Puzzle Mat" value="Puzzle Mat"></el-option>        
+              <el-option label="Rubber" value="Rubber"></el-option>        
+              <el-option label="Sidewalk" value="Sidewalk"></el-option>        
+              <el-option label="Simple Carpet" value="Simple Carpet"></el-option>        
+              <el-option label="Special Inorganic Floors" value="Special Inorganic Floors"></el-option>        
+              <el-option label="Special Nature Floors" value="Special Nature Floors"></el-option>        
+              <el-option label="Sports Floor" value="Sports Floor"></el-option>        
+              <el-option label="Stone Floors" value="Stone Floors"></el-option>        
+              <el-option label="Tatami" value="Tatami"></el-option>        
+              <el-option label="Tatami Panel" value="Tatami Panel"></el-option>        
+              <el-option label="Tile Checker" value="Tile Checker"></el-option>        
+              <el-option label="Tile Floors" value="Tile Floors"></el-option>        
+              <el-option label="Wood Floors" value="Wood Floors"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.tag }}</span>
@@ -237,7 +398,14 @@
         <!-- Catalog列 -->
         <el-table-column prop="catalog" label="Catalog">
           <template #header>
-            Catalog
+            <div>
+              Catalog
+              <el-select v-model="searchInputs.catalog" placeholder="Select" @change="() => {onCatalogSearchInput('catalog'); search()}" :disabled="isIdActive || isNameActive || isVfxActive || isDiyActive || isBuyActive || isSellActive || isColor1Active || isColor2Active || isMilesPriceActive || isSourceActive || isHhaConcept1Active || isHhaConcept2Active || isHhaSeriesActive || isTagActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="For sale" value="For sale"></el-option>        
+              <el-option label="Not for sale" value="Not for sale"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.catalog }}</span>
@@ -293,6 +461,7 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      vfx: '',
       diy: '',
       buy_min: null,
       buy_max: null,
@@ -300,9 +469,17 @@ export default {
       sell_min: null,
       sell_max: null,
       sell_sort: '',
+      color1: '',
+      color2: '',
       milesPrice_min: null,
       milesPrice_max: null,
       milesPrice_sort: '',
+      source: '',
+      hhaConcept1: '',
+      hhaConcept2: '',
+      hhaSeries: '',
+      tag: '',
+      catalog: '',
     });
 
 
@@ -318,10 +495,19 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isVfxActive = ref(false);
     const isDiyActive = ref(false);
     const isBuyActive = ref(false);
     const isSellActive = ref(false);
+    const isColor1Active = ref(false);
+    const isColor2Active = ref(false);
     const isMilesPriceActive = ref(false);
+    const isSourceActive = ref(false);
+    const isHhaConcept1Active = ref(false);
+    const isHhaConcept2Active = ref(false);
+    const isHhaSeriesActive = ref(false);
+    const isTagActive = ref(false);
+    const isCatalogActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -368,6 +554,15 @@ export default {
       });
     };
 
+    // 从/api/floors/searchVfx接口获取搜索数据
+    const fetchDataFromApiSearchVfx = (query) => {
+      axios.get(`/api/floors/searchVfx?vfx=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
     // 从/api/floors/searchDiy接口获取搜索数据
     const fetchDataFromApiSearchDiy = (query) => {
       axios.get(`/api/floors/searchDiy?diy=${query}`).then(response => {
@@ -395,11 +590,83 @@ export default {
       });
     };
 
+    // 从/api/floors/searchColor1接口获取搜索数据
+    const fetchDataFromApiSearchColor1 = (query) => {
+      axios.get(`/api/floors/searchColor1?color1=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchColor2接口获取搜索数据
+    const fetchDataFromApiSearchColor2 = (query) => {
+      axios.get(`/api/floors/searchColor2?color2=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
     // 从/api/floors/searchMilesPrice接口获取搜索数据
     const fetchDataFromApiSearchMilesPrice = (min, max, sort) => {
       axios.get(`/api/floors/searchMilesPrice?min=${min}&max=${max}&sort=${sort}`).then(response => {
         tableData.value = response.data;
         total.value = tableData.value.length;
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchSource接口获取搜索数据
+    const fetchDataFromApiSearchSource = (query) => {
+      axios.get(`/api/floors/searchSource?source=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchHhaConcept1接口获取搜索数据
+    const fetchDataFromApiSearchHhaConcept1 = (query) => {
+      axios.get(`/api/floors/searchHhaConcept1?hhaConcept1=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchHhaConcept2接口获取搜索数据
+    const fetchDataFromApiSearchHhaConcept2 = (query) => {
+      axios.get(`/api/floors/searchHhaConcept2?hhaConcept2=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchHhaSeries接口获取搜索数据
+    const fetchDataFromApiSearchHhaSeries = (query) => {
+      axios.get(`/api/floors/searchHhaSeries?hhaSeries=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchTag接口获取搜索数据
+    const fetchDataFromApiSearchTag = (query) => {
+      axios.get(`/api/floors/searchTag?tag=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/floors/searchCatalog接口获取搜索数据
+    const fetchDataFromApiSearchCatalog = (query) => {
+      axios.get(`/api/floors/searchCatalog?catalog=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
         currentPage.value = 1; 
       });
     };
@@ -418,6 +685,14 @@ export default {
         isNameActive.value = true;
       } else if (!searchInputs.value.name) {
         isNameActive.value = false;
+      }
+    };
+
+    const onVfxSearchInput = (column) => {
+      if (column === 'vfx' && searchInputs.value.vfx) {
+        isVfxActive.value = true;
+      } else if (!searchInputs.value.vfx) {
+        isVfxActive.value = false;
       }
     };
 
@@ -453,6 +728,22 @@ export default {
       }
     };
 
+    const onColor1SearchInput = (column) => {
+      if (column === 'color1' && searchInputs.value.color1) {
+        isColor1Active.value = true;
+      } else if (!searchInputs.value.color1) {
+        isColor1Active.value = false;
+      }
+    };
+
+    const onColor2SearchInput = (column) => {
+      if (column === 'color2' && searchInputs.value.color2) {
+        isColor2Active.value = true;
+      } else if (!searchInputs.value.color2) {
+        isColor2Active.value = false;
+      }
+    };
+
     const onMilesPriceSearchInput = (column) => {
       if (column === 'milesPrice') {
         if (searchInputs.value.milesPrice_min ||
@@ -462,6 +753,54 @@ export default {
         } else {
           isMilesPriceActive.value = false;
         }
+      }
+    };
+
+    const onSourceSearchInput = (column) => {
+      if (column === 'source' && searchInputs.value.source) {
+        isSourceActive.value = true;
+      } else if (!searchInputs.value.source) {
+        isSourceActive.value = false;
+      }
+    };
+
+    const onHhaConcept1SearchInput = (column) => {
+      if (column === 'hhaConcept1' && searchInputs.value.hhaConcept1) {
+        isHhaConcept1Active.value = true;
+      } else if (!searchInputs.value.hhaConcept1) {
+        isHhaConcept1Active.value = false;
+      }
+    };
+
+    const onHhaConcept2SearchInput = (column) => {
+      if (column === 'hhaConcept2' && searchInputs.value.hhaConcept2) {
+        isHhaConcept2Active.value = true;
+      } else if (!searchInputs.value.hhaConcept2) {
+        isHhaConcept2Active.value = false;
+      }
+    };
+
+    const onHhaSeriesSearchInput = (column) => {
+      if (column === 'hhaSeries' && searchInputs.value.hhaSeries) {
+        isHhaSeriesActive.value = true;
+      } else if (!searchInputs.value.hhaSeries) {
+        isHhaSeriesActive.value = false;
+      }
+    };
+
+    const onTagSearchInput = (column) => {
+      if (column === 'tag' && searchInputs.value.tag) {
+        isTagActive.value = true;
+      } else if (!searchInputs.value.tag) {
+        isTagActive.value = false;
+      }
+    };
+
+    const onCatalogSearchInput = (column) => {
+      if (column === 'catalog' && searchInputs.value.catalog) {
+        isCatalogActive.value = true;
+      } else if (!searchInputs.value.catalog) {
+        isCatalogActive.value = false;
       }
     };
 
@@ -477,6 +816,11 @@ export default {
       // 处理 name 列的搜索
       else if (searchInputs.value.name) {
         fetchDataFromApiFindByName(searchInputs.value.name);
+      }
+
+      // 处理 vfx 列的搜索
+      else if (searchInputs.value.vfx) {
+        fetchDataFromApiSearchVfx(searchInputs.value.vfx);
       }
 
       // 处理 diy 列的搜索
@@ -500,12 +844,52 @@ export default {
         fetchDataFromApiSearchSell(min, max, sort);
       }
 
+      // 处理 color1 列的搜索
+      else if (searchInputs.value.color1) {
+        fetchDataFromApiSearchColor1(searchInputs.value.color1);
+      }
+
+      // 处理 color2 列的搜索
+      else if (searchInputs.value.color2) {
+        fetchDataFromApiSearchColor2(searchInputs.value.color2);
+      }
+
       // 处理 milesPrice 列的搜索
       else if (searchInputs.value.milesPrice_min || searchInputs.value.milesPrice_max || searchInputs.value.milesPrice_sort ) {
         const min = searchInputs.value.milesPrice_min !== null ? searchInputs.value.milesPrice_min : '';
         const max = searchInputs.value.milesPrice_max !== null ? searchInputs.value.milesPrice_max : '';
         const sort = searchInputs.value.milesPrice_sort !== null ? searchInputs.value.milesPrice_sort : '';
         fetchDataFromApiSearchMilesPrice(min, max, sort);
+      }
+
+      // 处理 source 列的搜索
+      else if (searchInputs.value.source) {
+        fetchDataFromApiSearchSource(searchInputs.value.source);
+      }
+
+      // 处理 hhaConcept1 列的搜索
+      else if (searchInputs.value.hhaConcept1) {
+        fetchDataFromApiSearchHhaConcept1(searchInputs.value.hhaConcept1);
+      }
+
+      // 处理 hhaConcept2 列的搜索
+      else if (searchInputs.value.hhaConcept2) {
+        fetchDataFromApiSearchHhaConcept2(searchInputs.value.hhaConcept2);
+      }
+
+      // 处理 hhaSeries 列的搜索
+      else if (searchInputs.value.hhaSeries) {
+        fetchDataFromApiSearchHhaSeries(searchInputs.value.hhaSeries);
+      }
+
+      // 处理 tag 列的搜索
+      else if (searchInputs.value.tag) {
+        fetchDataFromApiSearchTag(searchInputs.value.tag);
+      }
+
+      // 处理 catalog 列的搜索
+      else if (searchInputs.value.catalog) {
+        fetchDataFromApiSearchCatalog(searchInputs.value.catalog);
       }
 
       else {
@@ -521,6 +905,7 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isVfxActive.value = false;
       isDiyActive.value = false;
       isBuyActive.value = false;
       searchInputs.value.buy_min = null;
@@ -528,9 +913,17 @@ export default {
       isSellActive.value = false;
       searchInputs.value.sell_min = null;
       searchInputs.value.sell_max = null;
+      isColor1Active.value = false;
+      isColor2Active.value = false;
       isMilesPriceActive.value = false;
       searchInputs.value.milesPrice_min = null;
       searchInputs.value.milesPrice_max = null;
+      isSourceActive.value = false;
+      isHhaConcept1Active.value = false;
+      isHhaConcept2Active.value = false;
+      isHhaSeriesActive.value = false;
+      isTagActive.value = false;
+      isCatalogActive.value = false;
 
       fetchAllData();
     };
@@ -564,6 +957,9 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isVfxActive,
+      onVfxSearchInput,
+      fetchDataFromApiSearchVfx,
       isDiyActive,
       onDiySearchInput,
       fetchDataFromApiSearchDiy,
@@ -573,9 +969,33 @@ export default {
       isSellActive,
       onSellSearchInput,
       fetchDataFromApiSearchSell,
+      isColor1Active,
+      onColor1SearchInput,
+      fetchDataFromApiSearchColor1,
+      isColor2Active,
+      onColor2SearchInput,
+      fetchDataFromApiSearchColor2,
       isMilesPriceActive,
       onMilesPriceSearchInput,
       fetchDataFromApiSearchMilesPrice,
+      isSourceActive,
+      onSourceSearchInput,
+      fetchDataFromApiSearchSource,
+      isHhaConcept1Active,
+      onHhaConcept1SearchInput,
+      fetchDataFromApiSearchHhaConcept1,
+      isHhaConcept2Active,
+      onHhaConcept2SearchInput,
+      fetchDataFromApiSearchHhaConcept2,
+      isHhaSeriesActive,
+      onHhaSeriesSearchInput,
+      fetchDataFromApiSearchHhaSeries,
+      isTagActive,
+      onTagSearchInput,
+      fetchDataFromApiSearchTag,
+      isCatalogActive,
+      onCatalogSearchInput,
+      fetchDataFromApiSearchCatalog,
     };
   }
 };

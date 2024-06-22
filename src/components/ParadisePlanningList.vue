@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isRequestActive || isThoughtBubbleActive || isSongActive || isFurnitureNameListActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isRequestActive || isThoughtBubbleActive || isSongActive || isFurnitureNameListActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -53,7 +53,10 @@
         <!-- Request列 -->
         <el-table-column prop="request" label="Request">
           <template #header>
-            Request
+            <div>
+              Request
+              <el-input v-model="searchInputs.request" placeholder="Search in Request" @input="onRequestSearchInput('request')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isThoughtBubbleActive || isSongActive || isFurnitureNameListActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.request }}</span>
@@ -63,7 +66,10 @@
         <!-- Thought Bubble列 -->
         <el-table-column prop="thoughtBubble" label="Thought Bubble">
           <template #header>
-            Thought Bubble
+            <div>
+              Thought Bubble
+              <el-input v-model="searchInputs.thoughtBubble" placeholder="Search in Thought Bubble" @input="onThoughtBubbleSearchInput('thoughtBubble')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isRequestActive || isSongActive || isFurnitureNameListActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.thoughtBubble }}</span>
@@ -73,7 +79,10 @@
         <!-- Song列 -->
         <el-table-column prop="song" label="Song">
           <template #header>
-            Song
+            <div>
+              Song
+              <el-input v-model="searchInputs.song" placeholder="Search in Song" @input="onSongSearchInput('song')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isRequestActive || isThoughtBubbleActive || isFurnitureNameListActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.song }}</span>
@@ -83,7 +92,10 @@
         <!-- Furniture Name List列 -->
         <el-table-column prop="furnitureNameList" label="Furniture Name List">
           <template #header>
-            Furniture Name List
+            <div>
+              Furniture Name List
+              <el-input v-model="searchInputs.furnitureNameList" placeholder="Search in Furniture Name List" @input="onFurnitureNameListSearchInput('furnitureNameList')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isRequestActive || isThoughtBubbleActive || isSongActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.furnitureNameList }}</span>
@@ -121,6 +133,10 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      request: '',
+      thoughtBubble: '',
+      song: '',
+      furnitureNameList: '',
     });
 
 
@@ -136,6 +152,10 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isRequestActive = ref(false);
+    const isThoughtBubbleActive = ref(false);
+    const isSongActive = ref(false);
+    const isFurnitureNameListActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -181,6 +201,42 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/paradise_planning/searchRequest接口获取搜索数据
+    const fetchDataFromApiSearchRequest = (query) => {
+      axios.get(`/api/paradise_planning/searchRequest?request=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/paradise_planning/searchThoughtBubble接口获取搜索数据
+    const fetchDataFromApiSearchThoughtBubble = (query) => {
+      axios.get(`/api/paradise_planning/searchThoughtBubble?thoughtBubble=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/paradise_planning/searchSong接口获取搜索数据
+    const fetchDataFromApiSearchSong = (query) => {
+      axios.get(`/api/paradise_planning/searchSong?song=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/paradise_planning/searchFurnitureNameList接口获取搜索数据
+    const fetchDataFromApiSearchFurnitureNameList = (query) => {
+      axios.get(`/api/paradise_planning/searchFurnitureNameList?furnitureNameList=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -199,6 +255,38 @@ export default {
       }
     };
 
+    const onRequestSearchInput = (column) => {
+      if (column === 'request' && searchInputs.value.request) {
+        isRequestActive.value = true;
+      } else if (!searchInputs.value.request) {
+        isRequestActive.value = false;
+      }
+    };
+
+    const onThoughtBubbleSearchInput = (column) => {
+      if (column === 'thoughtBubble' && searchInputs.value.thoughtBubble) {
+        isThoughtBubbleActive.value = true;
+      } else if (!searchInputs.value.thoughtBubble) {
+        isThoughtBubbleActive.value = false;
+      }
+    };
+
+    const onSongSearchInput = (column) => {
+      if (column === 'song' && searchInputs.value.song) {
+        isSongActive.value = true;
+      } else if (!searchInputs.value.song) {
+        isSongActive.value = false;
+      }
+    };
+
+    const onFurnitureNameListSearchInput = (column) => {
+      if (column === 'furnitureNameList' && searchInputs.value.furnitureNameList) {
+        isFurnitureNameListActive.value = true;
+      } else if (!searchInputs.value.furnitureNameList) {
+        isFurnitureNameListActive.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -211,6 +299,26 @@ export default {
       // 处理 name 列的搜索
       else if (searchInputs.value.name) {
         fetchDataFromApiFindByName(searchInputs.value.name);
+      }
+
+      // 处理 request 列的搜索
+      else if (searchInputs.value.request) {
+        fetchDataFromApiSearchRequest(searchInputs.value.request);
+      }
+
+      // 处理 thoughtBubble 列的搜索
+      else if (searchInputs.value.thoughtBubble) {
+        fetchDataFromApiSearchThoughtBubble(searchInputs.value.thoughtBubble);
+      }
+
+      // 处理 song 列的搜索
+      else if (searchInputs.value.song) {
+        fetchDataFromApiSearchSong(searchInputs.value.song);
+      }
+
+      // 处理 furnitureNameList 列的搜索
+      else if (searchInputs.value.furnitureNameList) {
+        fetchDataFromApiSearchFurnitureNameList(searchInputs.value.furnitureNameList);
       }
 
       else {
@@ -226,6 +334,10 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isRequestActive.value = false;
+      isThoughtBubbleActive.value = false;
+      isSongActive.value = false;
+      isFurnitureNameListActive.value = false;
 
       fetchAllData();
     };
@@ -254,6 +366,18 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isRequestActive,
+      onRequestSearchInput,
+      fetchDataFromApiSearchRequest,
+      isThoughtBubbleActive,
+      onThoughtBubbleSearchInput,
+      fetchDataFromApiSearchThoughtBubble,
+      isSongActive,
+      onSongSearchInput,
+      fetchDataFromApiSearchSong,
+      isFurnitureNameListActive,
+      onFurnitureNameListSearchInput,
+      fetchDataFromApiSearchFurnitureNameList,
     };
   }
 };

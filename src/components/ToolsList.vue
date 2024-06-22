@@ -53,7 +53,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -66,7 +66,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isDiyActive || isBuyActive || isSellActive || isMilesPriceActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -77,7 +77,10 @@
         <!-- Variation列 -->
         <el-table-column prop="variation" label="Variation">
           <template #header>
-            Variation
+            <div>
+              Variation
+              <el-input v-model="searchInputs.variation" placeholder="Search in Variation" @input="onVariationSearchInput('variation')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.variation }}</span>
@@ -87,7 +90,10 @@
         <!-- Body Title列 -->
         <el-table-column prop="bodyTitle" label="Body Title">
           <template #header>
-            Body Title
+            <div>
+              Body Title
+              <el-input v-model="searchInputs.bodyTitle" placeholder="Search in Body Title" @input="onBodyTitleSearchInput('bodyTitle')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.bodyTitle }}</span>
@@ -99,7 +105,7 @@
           <template #header>
             <div>
               Diy
-              <el-select v-model="searchInputs.diy" placeholder="Select" @change="() => {onDiySearchInput('diy'); search()}" :disabled="isIdActive || isNameActive || isBuyActive || isSellActive || isMilesPriceActive">
+              <el-select v-model="searchInputs.diy" placeholder="Select" @change="() => {onDiySearchInput('diy'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive">
               <el-option label="Null" value=""></el-option>
               <el-option label="Yes" value="Yes"></el-option>        
               <el-option label="No" value="No"></el-option>        
@@ -114,7 +120,14 @@
         <!-- Customize列 -->
         <el-table-column prop="customize" label="Customize">
           <template #header>
-            Customize
+            <div>
+              Customize
+              <el-select v-model="searchInputs.customize" placeholder="Select" @change="() => {onCustomizeSearchInput('customize'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Yes" value="Yes"></el-option>        
+              <el-option label="No" value="No"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.customize }}</span>
@@ -124,7 +137,18 @@
         <!-- Kit Cost列 -->
         <el-table-column prop="kitCost" label="Kit Cost">
           <template #header>
-            Kit Cost
+            <div>
+              Kit Cost
+              <div>
+                <el-input type="number" min="0" v-model.number="searchInputs.kitCost_min" placeholder="Min" @input="onKitCostSearchInput('kitCost')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.kitCost_max" placeholder="Max" @input="onKitCostSearchInput('kitCost')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+                <el-select v-model="searchInputs.kitCost_sort" placeholder="Sort" @change="() => {onKitCostSearchInput('kitCost'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive">
+                  <el-option label="不排序" value=""></el-option>
+                  <el-option label="升序" value="asc"></el-option>
+                  <el-option label="降序" value="desc"></el-option>
+                </el-select>
+              </div>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.kitCost }}</span>
@@ -134,7 +158,25 @@
         <!-- Uses列 -->
         <el-table-column prop="uses" label="Uses">
           <template #header>
-            Uses
+            <div>
+              Uses
+              <el-select v-model="searchInputs.uses" placeholder="Select" @change="() => {onUsesSearchInput('uses'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Yes" value="Yes"></el-option>
+              <el-option label="3" value="3"></el-option>        
+              <el-option label="9.5" value="9.5"></el-option>        
+              <el-option label="10" value="10"></el-option>        
+              <el-option label="20" value="20"></el-option>        
+              <el-option label="30" value="30"></el-option>        
+              <el-option label="40" value="40"></el-option>        
+              <el-option label="60" value="60"></el-option>        
+              <el-option label="90" value="90"></el-option>        
+              <el-option label="100" value="100"></el-option>        
+              <el-option label="180" value="180"></el-option>        
+              <el-option label="200" value="200"></el-option>        
+              <el-option label="Unlimited" value="Unlimited"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.uses }}</span>
@@ -144,7 +186,14 @@
         <!-- Stack Size列 -->
         <el-table-column prop="stackSize" label="Stack Size">
           <template #header>
-            Stack Size
+            <div>
+              Stack Size
+              <el-select v-model="searchInputs.stackSize" placeholder="Select" @change="() => {onStackSizeSearchInput('stackSize'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Yes" value="Yes"></el-option>
+              <el-option label="10" value="10"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.stackSize }}</span>
@@ -157,9 +206,9 @@
             <div>
               Buy
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive"></el-input>
-                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isSellActive || isMilesPriceActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_min" placeholder="Min" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.buy_max" placeholder="Max" @input="onBuySearchInput('buy')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+                <el-select v-model="searchInputs.buy_sort" placeholder="Sort" @change="() => {onBuySearchInput('buy'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isSellActive || isToolSetActive || isMilesPriceActive || isSourceActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -178,9 +227,9 @@
             <div>
               Sell
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive"></el-input>
-                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isMilesPriceActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_min" placeholder="Min" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.sell_max" placeholder="Max" @input="onSellSearchInput('sell')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isToolSetActive || isMilesPriceActive || isSourceActive"></el-input>
+                <el-select v-model="searchInputs.sell_sort" placeholder="Sort" @change="() => {onSellSearchInput('sell'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isToolSetActive || isMilesPriceActive || isSourceActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -196,7 +245,15 @@
         <!-- Tool Set列 -->
         <el-table-column prop="toolSet" label="Tool Set">
           <template #header>
-            Tool Set
+            <div>
+              Tool Set
+              <el-select v-model="searchInputs.toolSet" placeholder="Select" @change="() => {onToolSetSearchInput('toolSet'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isMilesPriceActive || isSourceActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Colorful Tools" value="Colorful Tools"></el-option>        
+              <el-option label="Outdoor Tools" value="Outdoor Tools"></el-option>        
+              <el-option label="None" value="None"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.toolSet }}</span>
@@ -209,9 +266,9 @@
             <div>
               Miles Price
               <div>
-                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_min" placeholder="Min" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive"></el-input>
-                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_max" placeholder="Max" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive"></el-input>
-                <el-select v-model="searchInputs.milesPrice_sort" placeholder="Sort" @change="() => {onMilesPriceSearchInput('milesPrice'); search()}" :disabled="isIdActive || isNameActive || isDiyActive || isBuyActive || isSellActive">
+                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_min" placeholder="Min" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isSourceActive"></el-input>
+                <el-input type="number" min="0" v-model.number="searchInputs.milesPrice_max" placeholder="Max" @input="onMilesPriceSearchInput('milesPrice')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isSourceActive"></el-input>
+                <el-select v-model="searchInputs.milesPrice_sort" placeholder="Sort" @change="() => {onMilesPriceSearchInput('milesPrice'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isSourceActive">
                   <el-option label="不排序" value=""></el-option>
                   <el-option label="升序" value="asc"></el-option>
                   <el-option label="降序" value="desc"></el-option>
@@ -227,7 +284,20 @@
         <!-- Source列 -->
         <el-table-column prop="source" label="Source">
           <template #header>
-            Source
+            <div>
+              Source
+              <el-select v-model="searchInputs.source" placeholder="Select" @change="() => {onSourceSearchInput('source'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isBodyTitleActive || isDiyActive || isCustomizeActive || isKitCostActive || isUsesActive || isStackSizeActive || isBuyActive || isSellActive || isToolSetActive || isMilesPriceActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Bug-Off" value="Bug-Off"></el-option>        
+              <el-option label="Fishing Tourney" value="Fishing Tourney"></el-option>        
+              <el-option label="Isabelle" value="Isabelle"></el-option>        
+              <el-option label="Nook's Cranny" value="Nook's Cranny"></el-option>        
+              <el-option label="May Day Tour" value="May Day Tour"></el-option>        
+              <el-option label="Nook Miles Shop" value="Nook Miles Shop"></el-option>        
+              <el-option label="Crafting" value="Crafting"></el-option>        
+              <el-option label="Wedding Season" value="Wedding Season"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.source }}</span>
@@ -293,16 +363,26 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      variation: '',
+      bodyTitle: '',
       diy: '',
+      customize: '',
+      kitCost_min: null,
+      kitCost_max: null,
+      kitCost_sort: '',
+      uses: '',
+      stackSize: '',
       buy_min: null,
       buy_max: null,
       buy_sort: '',
       sell_min: null,
       sell_max: null,
       sell_sort: '',
+      toolSet: '',
       milesPrice_min: null,
       milesPrice_max: null,
       milesPrice_sort: '',
+      source: '',
     });
 
 
@@ -318,10 +398,18 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isVariationActive = ref(false);
+    const isBodyTitleActive = ref(false);
     const isDiyActive = ref(false);
+    const isCustomizeActive = ref(false);
+    const isKitCostActive = ref(false);
+    const isUsesActive = ref(false);
+    const isStackSizeActive = ref(false);
     const isBuyActive = ref(false);
     const isSellActive = ref(false);
+    const isToolSetActive = ref(false);
     const isMilesPriceActive = ref(false);
+    const isSourceActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -368,9 +456,63 @@ export default {
       });
     };
 
+    // 从/api/tools/searchVariation接口获取搜索数据
+    const fetchDataFromApiSearchVariation = (query) => {
+      axios.get(`/api/tools/searchVariation?variation=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/tools/searchBodyTitle接口获取搜索数据
+    const fetchDataFromApiSearchBodyTitle = (query) => {
+      axios.get(`/api/tools/searchBodyTitle?bodyTitle=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
     // 从/api/tools/searchDiy接口获取搜索数据
     const fetchDataFromApiSearchDiy = (query) => {
       axios.get(`/api/tools/searchDiy?diy=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/tools/searchCustomize接口获取搜索数据
+    const fetchDataFromApiSearchCustomize = (query) => {
+      axios.get(`/api/tools/searchCustomize?customize=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/tools/searchKitCost接口获取搜索数据
+    const fetchDataFromApiSearchKitCost = (min, max, sort) => {
+      axios.get(`/api/tools/searchKitCost?min=${min}&max=${max}&sort=${sort}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length;
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/tools/searchUses接口获取搜索数据
+    const fetchDataFromApiSearchUses = (query) => {
+      axios.get(`/api/tools/searchUses?uses=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/tools/searchStackSize接口获取搜索数据
+    const fetchDataFromApiSearchStackSize = (query) => {
+      axios.get(`/api/tools/searchStackSize?stackSize=${query}`).then(response => {
         tableData.value = response.data;
         total.value = tableData.value.length; 
         currentPage.value = 1; 
@@ -395,11 +537,29 @@ export default {
       });
     };
 
+    // 从/api/tools/searchToolSet接口获取搜索数据
+    const fetchDataFromApiSearchToolSet = (query) => {
+      axios.get(`/api/tools/searchToolSet?toolSet=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
     // 从/api/tools/searchMilesPrice接口获取搜索数据
     const fetchDataFromApiSearchMilesPrice = (min, max, sort) => {
       axios.get(`/api/tools/searchMilesPrice?min=${min}&max=${max}&sort=${sort}`).then(response => {
         tableData.value = response.data;
         total.value = tableData.value.length;
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/tools/searchSource接口获取搜索数据
+    const fetchDataFromApiSearchSource = (query) => {
+      axios.get(`/api/tools/searchSource?source=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
         currentPage.value = 1; 
       });
     };
@@ -421,11 +581,63 @@ export default {
       }
     };
 
+    const onVariationSearchInput = (column) => {
+      if (column === 'variation' && searchInputs.value.variation) {
+        isVariationActive.value = true;
+      } else if (!searchInputs.value.variation) {
+        isVariationActive.value = false;
+      }
+    };
+
+    const onBodyTitleSearchInput = (column) => {
+      if (column === 'bodyTitle' && searchInputs.value.bodyTitle) {
+        isBodyTitleActive.value = true;
+      } else if (!searchInputs.value.bodyTitle) {
+        isBodyTitleActive.value = false;
+      }
+    };
+
     const onDiySearchInput = (column) => {
       if (column === 'diy' && searchInputs.value.diy) {
         isDiyActive.value = true;
       } else if (!searchInputs.value.diy) {
         isDiyActive.value = false;
+      }
+    };
+
+    const onCustomizeSearchInput = (column) => {
+      if (column === 'customize' && searchInputs.value.customize) {
+        isCustomizeActive.value = true;
+      } else if (!searchInputs.value.customize) {
+        isCustomizeActive.value = false;
+      }
+    };
+
+    const onKitCostSearchInput = (column) => {
+      if (column === 'kitCost') {
+        if (searchInputs.value.kitCost_min ||
+          searchInputs.value.kitCost_max ||
+          searchInputs.value.kitCost_sort) {
+          isKitCostActive.value = true;
+        } else {
+          isKitCostActive.value = false;
+        }
+      }
+    };
+
+    const onUsesSearchInput = (column) => {
+      if (column === 'uses' && searchInputs.value.uses) {
+        isUsesActive.value = true;
+      } else if (!searchInputs.value.uses) {
+        isUsesActive.value = false;
+      }
+    };
+
+    const onStackSizeSearchInput = (column) => {
+      if (column === 'stackSize' && searchInputs.value.stackSize) {
+        isStackSizeActive.value = true;
+      } else if (!searchInputs.value.stackSize) {
+        isStackSizeActive.value = false;
       }
     };
 
@@ -453,6 +665,14 @@ export default {
       }
     };
 
+    const onToolSetSearchInput = (column) => {
+      if (column === 'toolSet' && searchInputs.value.toolSet) {
+        isToolSetActive.value = true;
+      } else if (!searchInputs.value.toolSet) {
+        isToolSetActive.value = false;
+      }
+    };
+
     const onMilesPriceSearchInput = (column) => {
       if (column === 'milesPrice') {
         if (searchInputs.value.milesPrice_min ||
@@ -462,6 +682,14 @@ export default {
         } else {
           isMilesPriceActive.value = false;
         }
+      }
+    };
+
+    const onSourceSearchInput = (column) => {
+      if (column === 'source' && searchInputs.value.source) {
+        isSourceActive.value = true;
+      } else if (!searchInputs.value.source) {
+        isSourceActive.value = false;
       }
     };
 
@@ -479,9 +707,42 @@ export default {
         fetchDataFromApiFindByName(searchInputs.value.name);
       }
 
+      // 处理 variation 列的搜索
+      else if (searchInputs.value.variation) {
+        fetchDataFromApiSearchVariation(searchInputs.value.variation);
+      }
+
+      // 处理 bodyTitle 列的搜索
+      else if (searchInputs.value.bodyTitle) {
+        fetchDataFromApiSearchBodyTitle(searchInputs.value.bodyTitle);
+      }
+
       // 处理 diy 列的搜索
       else if (searchInputs.value.diy) {
         fetchDataFromApiSearchDiy(searchInputs.value.diy);
+      }
+
+      // 处理 customize 列的搜索
+      else if (searchInputs.value.customize) {
+        fetchDataFromApiSearchCustomize(searchInputs.value.customize);
+      }
+
+      // 处理 kitCost 列的搜索
+      else if (searchInputs.value.kitCost_min || searchInputs.value.kitCost_max || searchInputs.value.kitCost_sort ) {
+        const min = searchInputs.value.kitCost_min !== null ? searchInputs.value.kitCost_min : '';
+        const max = searchInputs.value.kitCost_max !== null ? searchInputs.value.kitCost_max : '';
+        const sort = searchInputs.value.kitCost_sort !== null ? searchInputs.value.kitCost_sort : '';
+        fetchDataFromApiSearchKitCost(min, max, sort);
+      }
+
+      // 处理 uses 列的搜索
+      else if (searchInputs.value.uses) {
+        fetchDataFromApiSearchUses(searchInputs.value.uses);
+      }
+
+      // 处理 stackSize 列的搜索
+      else if (searchInputs.value.stackSize) {
+        fetchDataFromApiSearchStackSize(searchInputs.value.stackSize);
       }
 
       // 处理 buy 列的搜索
@@ -500,12 +761,22 @@ export default {
         fetchDataFromApiSearchSell(min, max, sort);
       }
 
+      // 处理 toolSet 列的搜索
+      else if (searchInputs.value.toolSet) {
+        fetchDataFromApiSearchToolSet(searchInputs.value.toolSet);
+      }
+
       // 处理 milesPrice 列的搜索
       else if (searchInputs.value.milesPrice_min || searchInputs.value.milesPrice_max || searchInputs.value.milesPrice_sort ) {
         const min = searchInputs.value.milesPrice_min !== null ? searchInputs.value.milesPrice_min : '';
         const max = searchInputs.value.milesPrice_max !== null ? searchInputs.value.milesPrice_max : '';
         const sort = searchInputs.value.milesPrice_sort !== null ? searchInputs.value.milesPrice_sort : '';
         fetchDataFromApiSearchMilesPrice(min, max, sort);
+      }
+
+      // 处理 source 列的搜索
+      else if (searchInputs.value.source) {
+        fetchDataFromApiSearchSource(searchInputs.value.source);
       }
 
       else {
@@ -521,16 +792,26 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isVariationActive.value = false;
+      isBodyTitleActive.value = false;
       isDiyActive.value = false;
+      isCustomizeActive.value = false;
+      isKitCostActive.value = false;
+      searchInputs.value.kitCost_min = null;
+      searchInputs.value.kitCost_max = null;
+      isUsesActive.value = false;
+      isStackSizeActive.value = false;
       isBuyActive.value = false;
       searchInputs.value.buy_min = null;
       searchInputs.value.buy_max = null;
       isSellActive.value = false;
       searchInputs.value.sell_min = null;
       searchInputs.value.sell_max = null;
+      isToolSetActive.value = false;
       isMilesPriceActive.value = false;
       searchInputs.value.milesPrice_min = null;
       searchInputs.value.milesPrice_max = null;
+      isSourceActive.value = false;
 
       fetchAllData();
     };
@@ -564,18 +845,42 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isVariationActive,
+      onVariationSearchInput,
+      fetchDataFromApiSearchVariation,
+      isBodyTitleActive,
+      onBodyTitleSearchInput,
+      fetchDataFromApiSearchBodyTitle,
       isDiyActive,
       onDiySearchInput,
       fetchDataFromApiSearchDiy,
+      isCustomizeActive,
+      onCustomizeSearchInput,
+      fetchDataFromApiSearchCustomize,
+      isKitCostActive,
+      onKitCostSearchInput,
+      fetchDataFromApiSearchKitCost,
+      isUsesActive,
+      onUsesSearchInput,
+      fetchDataFromApiSearchUses,
+      isStackSizeActive,
+      onStackSizeSearchInput,
+      fetchDataFromApiSearchStackSize,
       isBuyActive,
       onBuySearchInput,
       fetchDataFromApiSearchBuy,
       isSellActive,
       onSellSearchInput,
       fetchDataFromApiSearchSell,
+      isToolSetActive,
+      onToolSetSearchInput,
+      fetchDataFromApiSearchToolSet,
       isMilesPriceActive,
       onMilesPriceSearchInput,
       fetchDataFromApiSearchMilesPrice,
+      isSourceActive,
+      onSourceSearchInput,
+      fetchDataFromApiSearchSource,
     };
   }
 };

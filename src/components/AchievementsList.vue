@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isInternalCategoryActive || isSequentialActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isInternalCategoryActive || isSequentialActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -63,7 +63,24 @@
         <!-- Internal Category列 -->
         <el-table-column prop="internalCategory" label="Internal Category">
           <template #header>
-            Internal Category
+            <div>
+              Internal Category
+              <el-select v-model="searchInputs.internalCategory" placeholder="Select" @change="() => {onInternalCategorySearchInput('internalCategory'); search()}" :disabled="isIdActive || isNameActive || isSequentialActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Communication" value="Communication"></el-option>        
+              <el-option label="DIY" value="DIY"></el-option>        
+              <el-option label="Event" value="Event"></el-option>        
+              <el-option label="Fish" value="Fish"></el-option>        
+              <el-option label="HHA" value="HHA"></el-option>        
+              <el-option label="Insect" value="Insect"></el-option>        
+              <el-option label="LandMaking" value="LandMaking"></el-option>        
+              <el-option label="Money" value="Money"></el-option>        
+              <el-option label="MyDesign" value="MyDesign"></el-option>        
+              <el-option label="Negative" value="Negative"></el-option>        
+              <el-option label="Plant" value="Plant"></el-option>        
+              <el-option label="Smartphone" value="Smartphone"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.internalCategory }}</span>
@@ -193,7 +210,14 @@
         <!-- Sequential列 -->
         <el-table-column prop="sequential" label="Sequential">
           <template #header>
-            Sequential
+            <div>
+              Sequential
+              <el-select v-model="searchInputs.sequential" placeholder="Select" @change="() => {onSequentialSearchInput('sequential'); search()}" :disabled="isIdActive || isNameActive || isInternalCategoryActive">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Yes" value="Yes"></el-option>
+              <el-option label="No" value="No"></el-option>
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.sequential }}</span>
@@ -231,6 +255,8 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      internalCategory: '',
+      sequential: '',
     });
 
 
@@ -246,6 +272,8 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isInternalCategoryActive = ref(false);
+    const isSequentialActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -291,6 +319,24 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/achievements/searchInternalCategory接口获取搜索数据
+    const fetchDataFromApiSearchInternalCategory = (query) => {
+      axios.get(`/api/achievements/searchInternalCategory?internalCategory=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/achievements/searchSequential接口获取搜索数据
+    const fetchDataFromApiSearchSequential = (query) => {
+      axios.get(`/api/achievements/searchSequential?sequential=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -309,6 +355,22 @@ export default {
       }
     };
 
+    const onInternalCategorySearchInput = (column) => {
+      if (column === 'internalCategory' && searchInputs.value.internalCategory) {
+        isInternalCategoryActive.value = true;
+      } else if (!searchInputs.value.internalCategory) {
+        isInternalCategoryActive.value = false;
+      }
+    };
+
+    const onSequentialSearchInput = (column) => {
+      if (column === 'sequential' && searchInputs.value.sequential) {
+        isSequentialActive.value = true;
+      } else if (!searchInputs.value.sequential) {
+        isSequentialActive.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -321,6 +383,16 @@ export default {
       // 处理 name 列的搜索
       else if (searchInputs.value.name) {
         fetchDataFromApiFindByName(searchInputs.value.name);
+      }
+
+      // 处理 internalCategory 列的搜索
+      else if (searchInputs.value.internalCategory) {
+        fetchDataFromApiSearchInternalCategory(searchInputs.value.internalCategory);
+      }
+
+      // 处理 sequential 列的搜索
+      else if (searchInputs.value.sequential) {
+        fetchDataFromApiSearchSequential(searchInputs.value.sequential);
       }
 
       else {
@@ -336,6 +408,8 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isInternalCategoryActive.value = false;
+      isSequentialActive.value = false;
 
       fetchAllData();
     };
@@ -364,6 +438,12 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isInternalCategoryActive,
+      onInternalCategorySearchInput,
+      fetchDataFromApiSearchInternalCategory,
+      isSequentialActive,
+      onSequentialSearchInput,
+      fetchDataFromApiSearchSequential,
     };
   }
 };

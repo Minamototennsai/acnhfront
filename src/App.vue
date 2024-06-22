@@ -17,7 +17,7 @@
         
         <router-view />
       </section>
-      <section id="div2" class="section-box" v-if="$route.path === '/'">
+      <section id="div2" class="section-box1" v-if="$route.path === '/'">
         <component31/>
       </section>
     </main>
@@ -145,6 +145,14 @@ export default {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
+  }
+  .section-box1 {
+    background-color: rgb(195, 222, 237);
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 250%;
   }
 
 

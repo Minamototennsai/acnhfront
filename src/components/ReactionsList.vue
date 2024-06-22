@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isSourceActive"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -53,7 +53,10 @@
         <!-- Source列 -->
         <el-table-column prop="source" label="Source">
           <template #header>
-            Source
+            <div>
+              Source
+              <el-input v-model="searchInputs.source" placeholder="Search in Source" @input="onSourceSearchInput('source')" @keyup.enter="search" :disabled="isIdActive || isNameActive"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.source }}</span>
@@ -101,6 +104,7 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      source: '',
     });
 
 
@@ -116,6 +120,7 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isSourceActive = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -161,6 +166,15 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/reactions/searchSource接口获取搜索数据
+    const fetchDataFromApiSearchSource = (query) => {
+      axios.get(`/api/reactions/searchSource?source=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -179,6 +193,14 @@ export default {
       }
     };
 
+    const onSourceSearchInput = (column) => {
+      if (column === 'source' && searchInputs.value.source) {
+        isSourceActive.value = true;
+      } else if (!searchInputs.value.source) {
+        isSourceActive.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -191,6 +213,11 @@ export default {
       // 处理 name 列的搜索
       else if (searchInputs.value.name) {
         fetchDataFromApiFindByName(searchInputs.value.name);
+      }
+
+      // 处理 source 列的搜索
+      else if (searchInputs.value.source) {
+        fetchDataFromApiSearchSource(searchInputs.value.source);
       }
 
       else {
@@ -206,6 +233,7 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isSourceActive.value = false;
 
       fetchAllData();
     };
@@ -234,6 +262,9 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isSourceActive,
+      onSourceSearchInput,
+      fetchDataFromApiSearchSource,
     };
   }
 };

@@ -29,7 +29,7 @@
           <template #header>
             <div>
               Id
-              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive"></el-input>
+              <el-input type="number" min="1" v-model="searchInputs.id" placeholder="Search in Id" @input="onIdSearchInput('id')" @keyup.enter="search" :disabled="isNameActive || isVariationActive || isColor1Active || isColor2Active"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -42,7 +42,7 @@
           <template #header>
             <div>
               Name
-              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive"></el-input>
+              <el-input v-model="searchInputs.name" placeholder="Search in Name" @input="onNameSearchInput('name')" @keyup.enter="search" :disabled="isIdActive || isVariationActive || isColor1Active || isColor2Active"></el-input>
             </div>
           </template>
           <template #default="{ row }">
@@ -53,7 +53,10 @@
         <!-- Variation列 -->
         <el-table-column prop="variation" label="Variation">
           <template #header>
-            Variation
+            <div>
+              Variation
+              <el-input v-model="searchInputs.variation" placeholder="Search in Variation" @input="onVariationSearchInput('variation')" @keyup.enter="search" :disabled="isIdActive || isNameActive || isColor1Active || isColor2Active"></el-input>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.variation }}</span>
@@ -63,7 +66,26 @@
         <!-- Color1列 -->
         <el-table-column prop="color1" label="Color1">
           <template #header>
-            Color1
+            <div>
+              Color1
+              <el-select v-model="searchInputs.color1" placeholder="Select" @change="() => {onColor1SearchInput('color1'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isColor2Active">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Beige" value="Beige"></el-option>        
+              <el-option label="Black" value="Black"></el-option>        
+              <el-option label="Blue" value="Blue"></el-option>        
+              <el-option label="Brown" value="Brown"></el-option>        
+              <el-option label="Colorful" value="Colorful"></el-option>        
+              <el-option label="Gray" value="Gray"></el-option>        
+              <el-option label="Green" value="Green"></el-option>        
+              <el-option label="Light blue" value="Light blue"></el-option>        
+              <el-option label="Orange" value="Orange"></el-option>        
+              <el-option label="Pink" value="Pink"></el-option>        
+              <el-option label="Purple" value="Purple"></el-option>        
+              <el-option label="Red" value="Red"></el-option>        
+              <el-option label="White" value="White"></el-option>        
+              <el-option label="Yellow" value="Yellow"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.color1 }}</span>
@@ -73,7 +95,26 @@
         <!-- Color2列 -->
         <el-table-column prop="color2" label="Color2">
           <template #header>
-            Color2
+            <div>
+              Color2
+              <el-select v-model="searchInputs.color2" placeholder="Select" @change="() => {onColor2SearchInput('color2'); search()}" :disabled="isIdActive || isNameActive || isVariationActive || isColor1Active">
+              <el-option label="Null" value=""></el-option>
+              <el-option label="Beige" value="Beige"></el-option>        
+              <el-option label="Black" value="Black"></el-option>        
+              <el-option label="Blue" value="Blue"></el-option>        
+              <el-option label="Brown" value="Brown"></el-option>        
+              <el-option label="Colorful" value="Colorful"></el-option>        
+              <el-option label="Gray" value="Gray"></el-option>        
+              <el-option label="Green" value="Green"></el-option>        
+              <el-option label="Light blue" value="Light blue"></el-option>        
+              <el-option label="Orange" value="Orange"></el-option>        
+              <el-option label="Pink" value="Pink"></el-option>        
+              <el-option label="Purple" value="Purple"></el-option>        
+              <el-option label="Red" value="Red"></el-option>        
+              <el-option label="White" value="White"></el-option>        
+              <el-option label="Yellow" value="Yellow"></el-option>        
+            </el-select>
+            </div>
           </template>
           <template #default="{ row }">
             <span>{{ row.color2 }}</span>
@@ -111,6 +152,9 @@ export default {
     const searchInputs = ref({
       id: '',
       name: '',
+      variation: '',
+      color1: '',
+      color2: '',
     });
 
 
@@ -126,6 +170,9 @@ export default {
     // 活动标识
     const isIdActive = ref(false);
     const isNameActive = ref(false);
+    const isVariationActive = ref(false);
+    const isColor1Active = ref(false);
+    const isColor2Active = ref(false);
 
     
     // 计算当前页需要显示的数据
@@ -171,6 +218,33 @@ export default {
         currentPage.value = 1; 
       });
     };
+
+    // 从/api/photos/searchVariation接口获取搜索数据
+    const fetchDataFromApiSearchVariation = (query) => {
+      axios.get(`/api/photos/searchVariation?variation=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/photos/searchColor1接口获取搜索数据
+    const fetchDataFromApiSearchColor1 = (query) => {
+      axios.get(`/api/photos/searchColor1?color1=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
+
+    // 从/api/photos/searchColor2接口获取搜索数据
+    const fetchDataFromApiSearchColor2 = (query) => {
+      axios.get(`/api/photos/searchColor2?color2=${query}`).then(response => {
+        tableData.value = response.data;
+        total.value = tableData.value.length; 
+        currentPage.value = 1; 
+      });
+    };
     
     //处理筛选条件变化事件
     const onIdSearchInput = (column) => {
@@ -189,6 +263,30 @@ export default {
       }
     };
 
+    const onVariationSearchInput = (column) => {
+      if (column === 'variation' && searchInputs.value.variation) {
+        isVariationActive.value = true;
+      } else if (!searchInputs.value.variation) {
+        isVariationActive.value = false;
+      }
+    };
+
+    const onColor1SearchInput = (column) => {
+      if (column === 'color1' && searchInputs.value.color1) {
+        isColor1Active.value = true;
+      } else if (!searchInputs.value.color1) {
+        isColor1Active.value = false;
+      }
+    };
+
+    const onColor2SearchInput = (column) => {
+      if (column === 'color2' && searchInputs.value.color2) {
+        isColor2Active.value = true;
+      } else if (!searchInputs.value.color2) {
+        isColor2Active.value = false;
+      }
+    };
+
     
     // 搜索按钮点击事件
     const search = () => {
@@ -201,6 +299,21 @@ export default {
       // 处理 name 列的搜索
       else if (searchInputs.value.name) {
         fetchDataFromApiFindByName(searchInputs.value.name);
+      }
+
+      // 处理 variation 列的搜索
+      else if (searchInputs.value.variation) {
+        fetchDataFromApiSearchVariation(searchInputs.value.variation);
+      }
+
+      // 处理 color1 列的搜索
+      else if (searchInputs.value.color1) {
+        fetchDataFromApiSearchColor1(searchInputs.value.color1);
+      }
+
+      // 处理 color2 列的搜索
+      else if (searchInputs.value.color2) {
+        fetchDataFromApiSearchColor2(searchInputs.value.color2);
       }
 
       else {
@@ -216,6 +329,9 @@ export default {
       }
       isIdActive.value = false;
       isNameActive.value = false;
+      isVariationActive.value = false;
+      isColor1Active.value = false;
+      isColor2Active.value = false;
 
       fetchAllData();
     };
@@ -244,6 +360,15 @@ export default {
       isNameActive,
       onNameSearchInput,
       fetchDataFromApiFindByName,
+      isVariationActive,
+      onVariationSearchInput,
+      fetchDataFromApiSearchVariation,
+      isColor1Active,
+      onColor1SearchInput,
+      fetchDataFromApiSearchColor1,
+      isColor2Active,
+      onColor2SearchInput,
+      fetchDataFromApiSearchColor2,
     };
   }
 };
